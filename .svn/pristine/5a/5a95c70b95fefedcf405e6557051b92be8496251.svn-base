@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script src="axios-v0.16.0.min.js"></script>
+		<script src="vue-2.5.3.js"></script>
+		<script src="elementui-2.0.11.js"></script>
+		<link rel="stylesheet" type="text/css"  href="elementui-2.0.11.css"></link>
+	</head>
+	
+	<body>
+		<div id="app">
+			<el-button-group>
+			  <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
+			  <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+			</el-button-group>
+			<el-button-group>
+			  <el-button type="primary" icon="el-icon-edit"></el-button>
+			  <el-button type="primary" icon="el-icon-share"></el-button>
+			  <el-button type="primary" icon="el-icon-delete"></el-button>
+</el-button-group>
+		</div>
+	</body>
+	
+	<script>
+		new Vue({el:"#app",data:{}});
+	</script>
+</html>

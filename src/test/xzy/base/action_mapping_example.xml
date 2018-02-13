@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<mapping msg_type="int" desc="msg_type=int|string">
+	<!--
+		msg节点中的name值如果为all_msg意味着映射到所有消息。
+		//用于过滤后续行为的滤镜,如果该滤镜在全局消息中，具体消息映射实例都将不会被执行
+		<filter name="false滤镜">
+			<desc>该滤镜加载msg下，该消息下，在该滤镜后的所有行为和滤镜都将不被执行</desc>
+			<class_name>com.xzy.base.server.container.help.Help_InterruptFilter</class_name>
+			<enable>true</enable>
+			<create_method>getSingleInstance</create_method>
+		</filter>
+
+		//用于打印出所有到达的消息，作为处理全部消息的实例，将在具体消息实例之前执行
+		<msg name="all_msg" desc="处理全部的消息">
+			<action name="打印消息名" sync="false">
+				<class_name>com.xzy.base.server.container.help.Help_PrintMsgAction</class_name>
+				<enable>true</enable>
+				<create_method>getSingleInstance</create_method>
+			</action>
+		</msg>
+		
+		//该类的作用，打印出映射消息的所有行为实例.如果映射在所有消息上，将导致每个消息每次都打印。尽量不这样映射
+		//该类主要用于调试
+		com.xzy.base.server.container.help.Help_PrintAllActionAction
+
+		action上的参数：<para key="sync_name" value=""/>
+		sync_name代表该行为是否需要同步，value为auto为关键字，代表使用和其它行为无冲突的锁
+		如果值为其它字符串，代表使用锁，并且值相同的行为使用相同的锁。以确保多个行为能依次单步执行。
+	-->
+
+	<msg name="all_msg" desc="" >
+		<action name="打印消息X" sync="true">
+			<class_name>com.xzy.base.server.container.help.Help_PrintMsgAction</class_name>
+			<enable>true</enable>
+			<create_method></create_method>
+
+			<para key="head_str" value="TEST"/>
+			<para key="is_print" value="true"/>
+		</action>
+		
+		<filter name="测试过滤行为">
+			<class_name>com.xzy.base.server.container.help.Help_InterruptFilter</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+			
+			<para key="includes" value="2"/>
+		</filter>
+	</msg>
+	
+	<msg name="0x8015" desc="Test">
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestResponseAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+	</msg>
+	<msg name="0x8001" desc="Test">
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+	</msg>
+	
+    <msg name="0x0001" desc="Test">
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+		
+		<filter name="测试过滤行为">
+			<class_name>com.xzy.base.server.container.help.Help_InterruptFilter</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</filter>
+		
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+	</msg>
+	
+    <msg name="0x0002" desc="Test">
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+	</msg>
+	
+    <msg name="0x0003" desc="Test">
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+		<action name="测试行为">
+			<class_name>test.xzy.base.TestAction</class_name>
+			<create_method></create_method>
+			<enable>true</enable>
+		</action>
+	</msg>
+</mapping>
+
+

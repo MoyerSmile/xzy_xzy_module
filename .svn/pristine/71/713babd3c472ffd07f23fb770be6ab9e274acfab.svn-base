@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="GB2312"?>
+<protocol name="GB905" charset="GBK" endian="big" string_end_byte_flag="0" data_timeout="5" capacity="16" max_capacity="2048" match="head_tail">
+	<transform>
+		<action name="GB905 0x7d Escape" cls="com.xzy.base.parser.verify.SingleCharacterTransform">
+			<para>0x7d</para>
+			<para>0x7d=0x01</para>
+			<para>0x7e=0x02</para>
+		</action>
+	</transform>
+	
+	<head>
+		<item name="s_flag" len="1" type="uint" value="0x7e"/>
+		<item name="msg" len="2" type="uint" />
+		<item name="property" len="2" type="uint" />
+		<item name="deviceId" len="6" type="bcd" />
+		<item name="flowId" len="2" type="uint" />
+	</head>
+	
+	<body minLength="1" msg="$msg">
+		<msg id="0x8001" dir="go" comment="common response">
+			<item name="responseFlowId" len="2" type="uint" />
+			<item name="name_len" len="1" type="uint" />
+			<item name="name" len="$name_len" type="String" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+			<item name="bcd_len" len="1" type="uint" />
+			<item name="bcd" len="$bcd_len" type="bcd" />
+			<item name="longid" len="8" type="int" />
+		</msg>
+		
+		
+		<msg id="0x8001" dir="come" comment="common response">
+			<item name="responseFlowId" len="2" type="uint" />
+			<item name="name_len" len="1" type="uint" />
+			<item name="name" len="$name_len" type="String" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+			<item name="bcd_len" len="1" type="uint" />
+			<item name="bcd" len="$bcd_len" type="bcd" />
+			<item name="longid" len="8" type="int" />
+		</msg>
+		
+		
+		<msg id="0x8005" dir="come" comment="">
+			<item name="info_x" len="0" type="String"/>
+
+			<item name="info_num" len="1" type="uint" />
+			<item name="group_1" len="$info_num" type="group">
+				<item name="r" len="1" type="uint" />
+				<item name="bcd_len" len="1" type="uint" />
+				<item name="bcd" len="$bcd_len" type="bcd" />
+				<item name="group_1_1" len="10" type="group">
+					<item name="info_y" len="0" type="String" />
+				</item>
+			</item>
+			<item name="group_2" len="2" type="group">
+				<item name="r" len="20" type="byteA" />
+			</item>
+			<item name="group_3" len="0" type="group">
+				<item name="id" len="2" type="uint" />
+				<item name="len" len="1" type="uint" />
+				<item name="val" len="$len" type="byteA" />
+			</item>
+		</msg>
+		
+		<msg id="0x8005" dir="go" comment="">
+			<item name="info_x" len="0" type="String" maxLen="13"/>
+
+			<item name="info_num" len="1" type="uint" />
+			<item name="group_1" len="$info_num" type="group">
+				<item name="r" len="1" type="uint" />
+				<item name="bcd_len" len="1" type="uint" />
+				<item name="bcd" len="$bcd_len" type="bcd" />
+				<item name="group_1_1" len="10" type="group">
+					<item name="info_y" len="0" type="String" />
+				</item>
+			</item>
+			<item name="group_2" len="2" type="group">
+				<item name="r" len="20" type="byteA" />
+			</item>
+			
+			<item name="group_3" len="0" type="group">
+				<item name="id" len="2" type="uint" />
+				<item name="len" len="1" type="uint" />
+				<item name="val" len="$len" type="byteA" />
+			</item>
+		</msg>
+		
+		
+		<msg id="0x8015" dir="go" comment="">
+			<item name="info_x" len="0" type="String" maxLen="13"/>
+
+			<item name="info_num" len="1" type="uint" />
+			<item name="group_1" len="$info_num" type="group">
+				<item name="r" len="1" type="uint" />
+				<item name="bcd_len" len="1" type="uint" />
+				<item name="bcd" len="$bcd_len" type="bcd" />
+				<item name="group_1_1" len="10" type="group">
+					<item name="info_y" len="0" type="String" />
+				</item>
+			</item>
+			<item name="group_2" len="2" type="group">
+				<item name="r" len="20" type="byteA" />
+			</item>
+			
+			<item name="group_3" len="0" type="group">
+				<item name="id" len="2" type="uint" />
+				<item name="len" len="1" type="uint" />
+				<item name="val" len="$len" type="byteA" />
+			</item>
+		</msg>
+	</body>
+	
+	<tail>
+		<item name="crc" len="1" type="uint">
+			<verify name="crc8 verify" cls="com.xzy.base.parser.verify.CrcVerifyFunc">
+				<para>crc8</para>
+				<para>1</para>
+				<para>-2</para>
+			</verify>
+		</item>
+		<item name="e_flag" len="1" type="int" value="0x7e" />
+	</tail>
+</protocol>

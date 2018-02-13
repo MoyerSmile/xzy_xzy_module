@@ -1,0 +1,429 @@
+package server.xzy.socket;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
+
+import server.xzy.socket.XZYReadSelectorTask.RegistInfo;
+
+import com.xzy.base.Util;
+import com.xzy.base.parser.IParser;
+import com.xzy.base.server.pool.BasicTask;
+import com.xzy.base.server.pool.ThreadPoolInfo;
+import com.xzy.base.server.pool.ThreadPoolServer;
+import com.xzy.base_c.BasicServer;
+import com.xzy.base_c.InfoContainer;
+
+public class XZYSocketClient extends XZYSocket {
+	public static final Object SELECTOR_FLAG = new Object();
+	public static final String CMD_PARSER_FLAG = "parser";
+	public static final String CMD_RELEASER_FLAG = "releaser";
+	public static final String SERVER_IP_FLAG = "ip";
+	public static final String SERVER_PORT_FLAG = "port";
+	public static final String SERVER_IP_BAK_FLAG = "ip_bak";
+	public static final String SERVER_PORT_BAK_FLAG = "port_bak";
+	
+	public static final String AUTO_CONNECT_CYCLE_FLAG = "connect_cycle";
+	
+	public static final String DETECT_CYCLE_FLAG = "detect_cycle";
+	public static final String TIME_OUT_FLAG = "timeout";
+	
+	public static final String MAX_CACH_SIZE_FLAG = "max_cach_size";
+
+	private long detectCycle = 2*60*1000l;
+	private long timeout = 0l;
+	private int maxCachSize = 8*1024;
+	
+	private XZYConnectInfo connInfo = null;
+
+	private String ip_main = null;
+	private int port_main = 0;
+
+	private String ip_bak = null;
+	private int port_bak = 0;
+	
+	private boolean isMainIp = true;
+	
+	private int connectCycle = 60000;
+
+	private String poolName = null,timerName = null;
+	private boolean isSelfSelector = false,isSelfTimer = true;
+	private XZYReadSelectorTask selectorTask = null;
+	private Selector selector = null;
+	
+	private IParser cmdParser = null;
+	private IReleaser cmdReleaser = null;
+	
+	private BasicTask timeoutTask = null,switchTask = null,connectTask = null;
+
+	@Override
+	public boolean startServer() {
+		try{
+			this.ip_main = this.getStringPara(SERVER_IP_FLAG);
+			String tempStr = this.getStringPara(SERVER_PORT_FLAG);
+			if(tempStr != null && tempStr.trim().length() > 0){
+				this.port_main = Integer.parseInt(tempStr.trim());
+			}else{
+				throw new Exception("错误端口配置!");
+			}
+			
+			tempStr = this.getStringPara(SERVER_IP_BAK_FLAG);
+			if(tempStr != null && tempStr.trim().length() > 0){
+				this.ip_bak = tempStr;
+
+				tempStr = this.getStringPara(SERVER_PORT_BAK_FLAG);
+				if(tempStr != null && tempStr.trim().length() > 0){
+					this.port_bak = Integer.parseInt(tempStr.trim());
+				}else{
+					throw new Exception("错误的备用端口配置!");
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		try{
+			String str = this.getStringPara(AUTO_CONNECT_CYCLE_FLAG);
+			if(str != null){
+				this.connectCycle = Integer.parseInt(str);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		if(this.getIntegerPara(MAX_CACH_SIZE_FLAG) != null){
+			this.maxCachSize = this.getIntegerPara(MAX_CACH_SIZE_FLAG).intValue()*1024;
+		}
+		
+		try{
+			Object tempStr = this.getPara(CMD_PARSER_FLAG);
+			if(tempStr instanceof String){
+				Class cls = Class.forName(((String)tempStr).trim());
+				Object tempObj = cls.newInstance();
+				this.cmdParser = (IParser)tempObj;
+				this.cmdParser.setServerName(this.getServerName()+"_parser");
+				this.cmdParser.addPara(CALL_SERVER_FLAG, this);
+				this.cmdParser.startServer();
+			}else if(tempStr instanceof IParser){
+				this.cmdParser = (IParser)tempStr;
+			}else{
+				throw new Exception(this.getServerName()+" Parser Error!"+tempStr);
+			}
+		}catch(Exception e){
+			this.error(this.getServerName()+" Parser Start Error!",e);
+			return false;
+		}
+		
+		try{
+			Object tempStr = this.getPara(CMD_RELEASER_FLAG);
+			if(tempStr instanceof String){
+				Class cls = Class.forName(((String)tempStr).trim());
+				Object tempObj = cls.newInstance();
+				this.cmdReleaser = (IReleaser)tempObj;
+			}else if(tempStr instanceof IReleaser){
+				this.cmdReleaser = (IReleaser)tempStr;
+			}else{
+				throw new Exception(this.getServerName()+" Releaser Error!"+tempStr);
+			}
+			this.cmdReleaser.init(this);
+		}catch(Exception e){
+			this.error(this.getServerName()+" Releaser Init Error!",e);
+			return false;
+		}
+		
+		try{
+			XZYReadSelectorTask tempSelector = (XZYReadSelectorTask)this.getPara(SELECTOR_FLAG);
+			if(tempSelector == null){
+				this.createSelector();
+			}else{
+				this.selectorTask = tempSelector;
+				this.isSelfSelector = false;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		String tempStr;
+		try{
+			tempStr = this.getStringPara(DETECT_CYCLE_FLAG);
+			if(tempStr != null){
+				this.detectCycle = Integer.parseInt(tempStr.trim());
+			}
+			tempStr = this.getStringPara(TIME_OUT_FLAG);
+			if(tempStr != null){
+				this.timeout = Integer.parseInt(tempStr.trim());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+		this.timerName = "XZYSocketClient["+this.getServerName()+"] Timer["+this.hashCode()+"]";
+		
+		if(this.timeout > 0){
+			ThreadPoolServer.getSingleInstance().createTimerPool(this.timerName);
+
+			ThreadPoolServer.getSingleInstance().schedule(this.timerName, timeoutTask = new BasicTask(){
+				public void run(){
+					XZYConnectInfo tempConn = XZYSocketClient.this.connInfo;
+					if(tempConn != null){
+						if(System.currentTimeMillis() - tempConn.getLastActiveTime() >= timeout){
+							XZYSocketClient.this._closeSocket(XZYSocket.SOCKET_CLOSE_CODE.CLOSE_TIMEOUT_CODE);
+							XZYSocketClient.this.connectSocket();
+						}
+					}
+				}
+			}, this.detectCycle, this.detectCycle, null);
+		}
+		
+		this.connectSocket();
+		if(this.connectCycle > 0){
+			ThreadPoolServer.getSingleInstance().createTimerPool(this.timerName);
+
+			ThreadPoolServer.getSingleInstance().schedule(this.timerName, connectTask = new BasicTask(){
+				public void run(){
+					switchSocket();
+					connectSocket();
+				}
+			}, this.connectCycle, this.connectCycle, null);
+		}
+		
+		this.isRun = true;
+		return true;
+	}
+	
+
+	public synchronized void stopServer(){
+		ThreadPoolServer.getSingleInstance().removeThreadPool(this.poolName);
+		if(this.isSelfTimer){
+			ThreadPoolServer.getSingleInstance().removeTimerPool(this.timerName);
+		}
+
+		if(this.timeoutTask != null){
+			this.timeoutTask.cancel();
+			this.timeoutTask = null;
+		}
+		if(this.switchTask != null){
+			this.switchTask.cancel();
+			this.switchTask = null;
+		}
+		if(this.connectTask != null){
+			this.connectTask.cancel();
+			this.connectTask = null;
+		}
+
+		this.ip_main = null;
+		this.ip_bak = null;
+		if(this.connInfo != null){
+			this.connInfo.closeSocket();
+		}
+		if(this.isSelfSelector){
+			if(this.selectorTask != null){
+				try{
+					this.selectorTask.cancel();
+				}catch(Exception e){}
+				this.selectorTask = null;
+			}
+			if(this.selector != null){
+				try{
+					this.selector.close();
+				}catch(Exception e){}
+				this.selector = null;
+			}
+		}
+		
+		super.stopServer();
+	}
+	
+	private void createSelector() throws Exception{
+		this.isSelfSelector = true;
+		this.selector = Selector.open();
+		this.selectorTask = new XZYReadSelectorTask(this.selector,this);
+
+		this.poolName = this.getServerName()+"["+this.hashCode()+"]XZYSocket";
+		ThreadPoolInfo pInfo = new ThreadPoolInfo(1,1);
+		ThreadPoolServer.getSingleInstance().createThreadPool(poolName, pInfo);
+		ThreadPoolServer.getSingleInstance().addTask2ThreadPool(poolName, selectorTask);
+	}
+
+	public synchronized boolean connectSocket(){
+		boolean isSuccess = this._connectSocket(this.ip_main, this.port_main);
+		if(isSuccess){
+			isMainIp = true;
+		}
+		if(!isSuccess && this.ip_bak != null){
+			isSuccess = this._connectSocket(this.ip_bak, this.port_bak);
+			if(isSuccess){
+				isMainIp = false;
+			}else{
+				isMainIp = true;
+			}
+		}
+		return isSuccess;
+	}
+	private boolean _connectSocket(String ip,int port){
+		if(this.isConnected()){
+			return true;
+		}
+		this._closeSocket(null);
+
+		try{
+			SocketChannel channel = SocketChannel.open();
+			channel.configureBlocking(false);
+			channel.socket().setSoTimeout(5000);
+			this.info(this.getServerName()+" Connect Start="+ip+":"+port);
+			channel.connect(new InetSocketAddress(InetAddress.getByName(ip),port));
+			
+			//异步客户端连接的问题。连接可能未完成即执行下述代码，所以需要在此处判断，否则注册在selector中将无效。
+			int count = 0;
+			if(channel.isConnectionPending()){
+				while(!channel.finishConnect()){
+					count ++;
+					if(count >= 500){
+						channel.close();
+					}
+					Util.sleep(10);
+				}
+			}
+
+			this.connInfo = new XZYConnectInfo(channel,this.cmdParser,this.cmdReleaser,this);
+			this.connInfo.setInfo(XZYSocket.SOCKET_FLAG, this);
+			this.selectorTask.addSocketChannel(this.selectorTask.new RegistInfo(channel, connInfo));
+			this.info(this.getServerName()+":Connect Success="+ip+":"+port);
+		}catch(Exception e){
+			this.error("Connect Error:ip="+ip+" port="+port,e);
+			this._closeSocket(null);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * 关闭当前的连接。
+	 */
+	private synchronized void _closeSocket(SOCKET_CLOSE_CODE closeCode){
+		XZYConnectInfo conn = this.connInfo;
+		this.connInfo = null;
+		if(conn != null){
+			conn.destroy();
+			
+			InfoContainer cmdInfo = new InfoContainer();
+			cmdInfo.setInfo(XZYSocket.CMD_FLAG, XZYSocket.SOCKET_DISCONNECT_CMD);
+			cmdInfo.setInfo(XZYSocket.SOCKET_FLAG, conn);
+			cmdInfo.setInfo(XZYSocket.SOCKET_CLOSE_CODE_FLAG, closeCode);
+			conn.releaseCmdInfo(new InfoContainer[]{cmdInfo});
+		}
+	}
+	public void closeSocket(){
+		this._closeSocket(SOCKET_CLOSE_CODE.USER_CLOSE_CODE);
+	}
+	
+	public XZYConnectInfo getConnInfo(){
+		return this.connInfo;
+	}
+	
+	public synchronized boolean isConnected(){
+		return this.connInfo != null;
+	}
+	
+	/**
+	 * 通过当前的连接发送数据到服务器
+	 * @param data			待发送数据
+	 * @param offset		开始发送的位置偏移
+	 * @param len			需要发送的数据长度
+	 * @throws Exception
+	 */
+	public boolean sendData(byte[] data,int offset,int len) throws Exception{
+		if(!this.isRunning()){
+			return false;
+		}
+		if(this.connInfo != null){
+			this.connInfo.writeData(data, offset, len);
+		}else{
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean sendData(InfoContainer info) throws Exception{
+		if(!this.isRunning()){
+			return false;
+		}
+		if(this.connInfo != null){
+			ByteBuffer data = this.cmdParser.encodeData(info);
+			this.connInfo.writeData(data);
+		}else{
+			return false;
+		}
+		return true;
+	}
+	
+	private void switchSocket(){
+		try{
+			if(this.isMainIp || !this.isConnected()){
+				return ;
+			}
+			Socket socket=new Socket(InetAddress.getByName(this.ip_main),this.port_main);
+			socket.close();
+
+			this.info("Main IP OK,Switch To Main! host="+this.ip_main+":"+this.port_main);
+			this._closeSocket(SOCKET_CLOSE_CODE.SWITCH_MAIN_CODE);
+			this.connectSocket();
+		}catch(Exception e){
+			this.error("try to main ip fail!",e);
+		}
+	}
+	public boolean isMainIp(){
+		return isMainIp;
+	}
+
+
+	@Override
+	protected XZYConnectInfo registerSocketChannel(SocketChannel channel) {
+		
+		return null;
+	}
+
+
+	@Override
+	public void registerSocket(RegistInfo registInfo, Selector selector) {
+		try{
+			registInfo.channel.configureBlocking(false);
+			registInfo.channel.socket().setSoLinger(true, 10);
+			registInfo.channel.socket().setTcpNoDelay(false);
+			registInfo.channel.socket().setKeepAlive(true);
+			registInfo.connInfo.setSelectionKey(registInfo.channel.register(selector,SelectionKey.OP_READ,registInfo.connInfo));
+			registInfo.connInfo.switchSendMode2Thread(this.maxCachSize);
+		}catch(Exception e){
+			e.printStackTrace();
+			try{
+				registInfo.channel.close();
+			}catch(Exception ee){}
+			return ;
+		}
+		
+		try{
+			//发布的时候需要把所属的selector也发布出去，所以必须在注册后发布。
+			InfoContainer cmdInfo = new InfoContainer();
+			cmdInfo.setInfo(XZYSocket.CMD_FLAG, XZYSocket.SOCKET_CONNECT_CMD);
+			cmdInfo.setInfo(XZYSocket.SOCKET_FLAG, registInfo.connInfo);
+			registInfo.connInfo.releaseCmdInfo(new InfoContainer[]{cmdInfo});
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void destroySocket(XZYConnectInfo connInfo, SOCKET_CLOSE_CODE code) {
+		this._closeSocket(code);
+	}
+	
+}

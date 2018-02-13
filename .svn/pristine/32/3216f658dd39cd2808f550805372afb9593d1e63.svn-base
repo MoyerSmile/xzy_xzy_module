@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=GIDnGAt8PsmCKiSQizCk84R58sO2GlWf"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js"></script>
+		<script type="text/javascript" src="mapEngine_bd.js"></script>
+		
+		<script>
+			window.onload = function(){
+				window.xzyMap = new XZYMap("test_map");
+				window.xzyMap.addControl(XZYMap.CONTROL_TYPE.TRAFFIC,{pos:9});
+	
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div id="test_map" style="height:500px;">
+		</div>
+	</body>
+</html>

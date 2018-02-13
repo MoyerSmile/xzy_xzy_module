@@ -1,0 +1,145 @@
+package web.xzy.base;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.xzy.base.server.container.BasicAction;
+import com.xzy.base_c.InfoContainer;
+
+/**
+ * 最顶级行为
+ *
+ */
+public abstract class HttpAction extends BasicAction{
+	public static final String ACTION_OBJ_FLAG = "_action_obj_";
+
+	private Object syncLock = null;
+	private boolean isPrint = false;
+	public void init() throws Exception{
+		super.init();
+		
+		String tempStr = this.getStringPara("is_print");
+		if(tempStr != null){
+			this.isPrint = tempStr.trim().equalsIgnoreCase("true"); 
+		}
+		tempStr = this.getStringPara("sync_name");
+		if(tempStr != null && tempStr.trim().length() > 0){
+			tempStr = tempStr.trim();
+			if(tempStr.equals("auto")){
+				this.syncLock = this;
+			}else{
+				this.syncLock = HttpAction._getSyncLock(tempStr);
+			}
+		}
+	}
+	
+	public boolean isPrint(){
+		return this.isPrint;
+	}
+	
+	public static HttpAction getAction(HttpInfo hInfo){
+		return (HttpAction)hInfo.getAttribute(ACTION_OBJ_FLAG, HttpInfo.REQUEST_SCOPE);
+	}
+	
+	public final boolean execute(InfoContainer httpInfo) throws Exception{
+		//是否同步，以解决多线程并发问题。
+		if(this.syncLock == null){
+			return this._execute(httpInfo);
+		}else{
+			synchronized(this.syncLock){
+				return this._execute(httpInfo);
+			}
+		}
+	}
+	private final boolean _execute(InfoContainer httpInfo) throws Exception{
+		HttpInfo hInfo = (HttpInfo)httpInfo;
+		
+		hInfo.setAttribute(ACTION_OBJ_FLAG, this, HttpInfo.REQUEST_SCOPE);
+		
+		String destPageName = this.httpAction(hInfo, hInfo.getRequest(), hInfo.getResponse());
+		
+		if(destPageName != null){
+			String destPage = (String)this.getPara("forward_"+destPageName);
+			this.info("pageRedirect:"+destPage);
+			if(destPage.startsWith("http:")){
+				this.redirect(hInfo, destPage);
+			}else{
+				this.forward(hInfo, destPage);
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean existConfigPage(String destPageName){
+		if(destPageName == null){
+			return false;
+		}
+		return this.getPara("forward_"+destPageName) != null;
+	}
+	
+	public void forward(HttpInfo hInfo,String forward) throws Exception{
+		hInfo.getRequest().getRequestDispatcher(forward).forward(hInfo.getRequest(), hInfo.getResponse());
+	}
+	
+	public void redirect(HttpInfo hInfo,String url) throws Exception{
+		hInfo.getResponse().sendRedirect(url);
+	}
+	
+	public String httpAction(HttpInfo httpInfo,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String method = httpInfo.getString("method");
+		if(method == null) {
+			return null;
+		}
+		Method callMethod = this.getClass().getMethod(method, new Class[]{HttpInfo.class,HttpServletRequest.class,HttpServletResponse.class});
+		if(callMethod != null){
+			return (String)callMethod.invoke(this, new Object[]{httpInfo,request,response});
+		}
+		return null;
+	}
+
+	private static HashMap syncLockMapping = new HashMap(16);
+	private static synchronized Object _getSyncLock(String lockName){
+		Object lock = syncLockMapping.get(lockName);
+		if(lock == null){
+			lock = new Object();
+			syncLockMapping.put(lockName, lock);
+		}
+		return lock;
+	}
+	
+
+	public void writeJson(HttpInfo httpInfo, HttpServletRequest request,
+			HttpServletResponse response,JSONObject json){
+		try {
+	   	 	response.setContentType("application/json; charset=GBK");
+			response.getWriter().write(json.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void writeJsonArray(HttpInfo httpInfo, HttpServletRequest request,
+			HttpServletResponse response,String failureReason,int totalNum, JSONArray jsonArray){
+		try {
+			JSONObject resultInfo = new JSONObject();
+			if(failureReason == null){
+				resultInfo.put("success", "true");
+				resultInfo.put("total", totalNum);
+				resultInfo.put("rows", jsonArray);
+			}else{
+				resultInfo.put("success", "false");
+				resultInfo.put("reason", failureReason);
+			}
+	   	 	response.setContentType("application/json; charset=GBK");
+			response.getWriter().write(resultInfo.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

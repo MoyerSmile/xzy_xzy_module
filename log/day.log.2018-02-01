@@ -1,0 +1,82 @@
+02-01 14:50:43 INFO  XZYProtocolParser - GB905[SocketServer Test]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 14:50:43 INFO  ThreadPoolServer - Create New ThreadPool[cost_stat_timer_1872410268-ThreadPool[714614027]] Success
+02-01 14:50:43 INFO  ThreadPoolServer - Create New TimerPool[cost_stat_timer_1872410268] Success
+02-01 14:50:43 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1288141870] Socket Read] Success
+02-01 14:50:44 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1288141870] Socket Accept] Success
+02-01 14:50:44 INFO  XZYSocketServer - 	服务地址:0.0.0.0:23456 开启成功!
+02-01 14:50:44 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1288141870] Socket Timeout Detect] Success
+02-01 14:50:45 INFO  XZYReadSelectorTask - [SocketServer Test]connect remote close!/127.0.0.1:60364
+02-01 14:50:46 INFO  XZYProtocolParser - GB905[SocketClient]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 14:50:46 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient[1967205423]XZYSocket] Success
+02-01 14:50:46 INFO  XZYSocketClient - SocketClient Connect Start=127.0.0.1:23456
+02-01 14:50:46 INFO  XZYSocketClient - SocketClient:Connect Success=127.0.0.1:23456
+02-01 14:50:46 INFO  ThreadPoolServer - Create New ThreadPool[XZYSocketClient[SocketClient] Timer[1967205423]-ThreadPool[42121758]] Success
+02-01 14:50:46 INFO  ThreadPoolServer - Create New TimerPool[XZYSocketClient[SocketClient] Timer[1967205423]] Success
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test-actionContainer-ThreadPool[1929600551]] Success
+02-01 14:50:47 INFO  XZYActionContainerServer - Load Mapping Server[SocketServer Test-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 14:50:47 INFO  XZYProtocolParser - GB905[SocketServer Test]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test-actionContainer-ThreadPool[2012232625]] Success
+02-01 14:50:47 INFO  XZYActionContainerServer - Load Mapping Server[SocketServer Test-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[846063400] Socket Read] Success
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[846063400] Socket Accept] Success
+02-01 14:50:47 INFO  XZYSocketServer - 	服务地址:0.0.0.0:23457 开启成功!
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[846063400] Socket Timeout Detect] Success
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient-actionContainer-ThreadPool[128526626]] Success
+02-01 14:50:47 INFO  XZYActionContainerServer - Load Mapping Server[SocketClient-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 14:50:47 INFO  XZYProtocolParser - GB905[SocketClient]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient-actionContainer-ThreadPool[754666084]] Success
+02-01 14:50:47 INFO  XZYActionContainerServer - Load Mapping Server[SocketClient-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient[88558700]XZYSocket] Success
+02-01 14:50:47 INFO  XZYSocketClient - SocketClient Connect Start=127.0.0.1:23457
+02-01 14:50:47 INFO  XZYSocketClient - SocketClient:Connect Success=127.0.0.1:23457
+02-01 14:50:47 INFO  ThreadPoolServer - Create New ThreadPool[XZYSocketClient[SocketClient] Timer[88558700]-ThreadPool[1265210847]] Success
+02-01 14:50:47 INFO  ThreadPoolServer - Create New TimerPool[XZYSocketClient[SocketClient] Timer[88558700]] Success
+02-01 14:50:47 INFO  Help_PrintMsgAction - TEST:connect
+02-01 14:50:47 INFO  XZYActionContainerServer - SocketServer Test-actionContainer:MSG[connect]:0
+02-01 14:50:47 INFO  Help_PrintMsgAction - TEST:0x8015
+02-01 14:50:47 INFO  XZYActionContainerServer - SocketServer Test-actionContainer:MSG[0x8015]:1
+02-01 14:50:47 INFO  Help_PrintMsgAction - TEST:connect
+02-01 14:50:47 INFO  XZYActionContainerServer - SocketClient-actionContainer:MSG[connect]:0
+02-01 14:50:47 INFO  Help_PrintMsgAction - TEST:0x8001
+02-01 14:50:47 INFO  XZYActionContainerServer - SocketClient-actionContainer:MSG[0x8001]:0
+02-01 15:08:06 INFO  XZYProtocolParser - GB905[SocketServer Test]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 15:08:06 INFO  ThreadPoolServer - Create New ThreadPool[cost_stat_timer_650880482-ThreadPool[1518338098]] Success
+02-01 15:08:06 INFO  ThreadPoolServer - Create New TimerPool[cost_stat_timer_650880482] Success
+02-01 15:08:06 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1386883398] Socket Read] Success
+02-01 15:08:06 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1386883398] Socket Accept] Success
+02-01 15:08:06 INFO  XZYSocketServer - 	服务地址:0.0.0.0:23456 开启成功!
+02-01 15:08:06 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[1386883398] Socket Timeout Detect] Success
+02-01 15:08:07 INFO  XZYReadSelectorTask - [SocketServer Test]connect remote close!/127.0.0.1:60570
+02-01 15:08:08 INFO  XZYProtocolParser - GB905[SocketClient]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 15:08:08 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient[1243806178]XZYSocket] Success
+02-01 15:08:08 INFO  XZYSocketClient - SocketClient Connect Start=127.0.0.1:23456
+02-01 15:08:08 INFO  XZYSocketClient - SocketClient:Connect Success=127.0.0.1:23456
+02-01 15:08:08 INFO  ThreadPoolServer - Create New ThreadPool[XZYSocketClient[SocketClient] Timer[1243806178]-ThreadPool[1010931249]] Success
+02-01 15:08:08 INFO  ThreadPoolServer - Create New TimerPool[XZYSocketClient[SocketClient] Timer[1243806178]] Success
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test-actionContainer-ThreadPool[1661081225]] Success
+02-01 15:08:10 INFO  XZYActionContainerServer - Load Mapping Server[SocketServer Test-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 15:08:10 INFO  XZYProtocolParser - GB905[SocketServer Test]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test-actionContainer-ThreadPool[283383329]] Success
+02-01 15:08:10 INFO  XZYActionContainerServer - Load Mapping Server[SocketServer Test-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[893192050] Socket Read] Success
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[893192050] Socket Accept] Success
+02-01 15:08:10 INFO  XZYSocketServer - 	服务地址:0.0.0.0:23457 开启成功!
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketServer Test[893192050] Socket Timeout Detect] Success
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient-actionContainer-ThreadPool[1738674023]] Success
+02-01 15:08:10 INFO  XZYActionContainerServer - Load Mapping Server[SocketClient-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 15:08:10 INFO  XZYProtocolParser - GB905[SocketClient]name=GB905 endian=BIG_ENDIAN match=HEAD_TAIL charset=GBK timeout=5000 capacity=16K maxCapacity=2048
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient-actionContainer-ThreadPool[333683827]] Success
+02-01 15:08:10 INFO  XZYActionContainerServer - Load Mapping Server[SocketClient-actionContainer]'s Config [D:\EntersSellsSaves\xzy_xzy_module\bin\test\xzy\base\action_mapping_example.xml] Success!
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[SocketClient[1691185247]XZYSocket] Success
+02-01 15:08:10 INFO  XZYSocketClient - SocketClient Connect Start=127.0.0.1:23457
+02-01 15:08:10 INFO  XZYSocketClient - SocketClient:Connect Success=127.0.0.1:23457
+02-01 15:08:10 INFO  ThreadPoolServer - Create New ThreadPool[XZYSocketClient[SocketClient] Timer[1691185247]-ThreadPool[153245266]] Success
+02-01 15:08:10 INFO  ThreadPoolServer - Create New TimerPool[XZYSocketClient[SocketClient] Timer[1691185247]] Success
+02-01 15:08:10 INFO  Help_PrintMsgAction - TEST:connect
+02-01 15:08:10 INFO  XZYActionContainerServer - SocketServer Test-actionContainer:MSG[connect]:0
+02-01 15:08:10 INFO  Help_PrintMsgAction - TEST:0x8015
+02-01 15:08:10 INFO  XZYActionContainerServer - SocketServer Test-actionContainer:MSG[0x8015]:0
+02-01 15:08:10 INFO  Help_PrintMsgAction - TEST:connect
+02-01 15:08:10 INFO  XZYActionContainerServer - SocketClient-actionContainer:MSG[connect]:0
+02-01 15:08:10 INFO  Help_PrintMsgAction - TEST:0x8001
+02-01 15:08:10 INFO  XZYActionContainerServer - SocketClient-actionContainer:MSG[0x8001]:1

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="1" hostname="fleetymatoMacBook-Pro.local" name="com.xzy.test.ThreadPoolServerTest" tests="6" time="10.668" timestamp="2017-10-19T11:01:13">
+  <properties>
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib" />
+    <property name="java.vm.version" value="24.71-b01" />
+    <property name="ant.library.dir" value="/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib" />
+    <property name="gopherProxySet" value="false" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on December 20 2010" />
+    <property name="ant.java.version" value="1.7" />
+    <property name="ant.file.test" value="/Users/fleety/match_projects/xzy_xzy_module/ant/test.xml" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="user.country" value="CN" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="user.dir" value="/Users/fleety/match_projects/xzy_xzy_module/ant" />
+    <property name="java.runtime.version" value="1.7.0_71-b14" />
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+    <property name="eclipse.pdebuild.scripts" value="/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts//" />
+    <property name="basedir" value="/Users/fleety/match_projects/xzy_xzy_module" />
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/endorsed" />
+    <property name="os.arch" value="x86_64" />
+    <property name="ant.project.default-target" value="test" />
+    <property name="java.io.tmpdir" value="/var/folders/4g/1n6y1b4d7wjg5_mzl84x207m0000gn/T/" />
+    <property name="ant.core.lib" value="/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant.jar" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="os.name" value="Mac OS X" />
+    <property name="ant.home" value="/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030" />
+    <property name="eclipse.pdebuild.templates" value="/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/templates//" />
+    <property name="ant.project.name" value="test" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:/Users/fleety/Downloads/eclipse/configuration/org.eclipse.osgi/bundles/595/1/.cp" />
+    <property name="eclipse.pdebuild.home" value="/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/.//" />
+    <property name="java.class.version" value="51.0" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="ant.file.type.test" value="file" />
+    <property name="os.version" value="10.11.6" />
+    <property name="ant.file" value="/Users/fleety/match_projects/xzy_xzy_module/ant/test.xml" />
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="user.home" value="/Users/fleety" />
+    <property name="user.timezone" value="" />
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+    <property name="java.specification.version" value="1.7" />
+    <property name="file.encoding" value="EUC_CN" />
+    <property name="java.class.path" value="/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-antlr.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-bcel.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-bsf.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-log4j.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-oro.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-regexp.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-resolver.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-apache-xalan2.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-commons-logging.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-commons-net.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-jai.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-javamail.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-jdepend.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-jmf.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-jsch.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-junit.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-junit4.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-launcher.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-netrexx.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-swing.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant-testutil.jar:/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant.jar:/Users/fleety/Downloads/eclipse/configuration/org.eclipse.osgi/bundles/56/1/.cp/lib/antdebug.jar:/Users/fleety/Downloads/eclipse/configuration/org.eclipse.osgi/bundles/56/1/.cp/lib/remote.jar:/Users/fleety/Downloads/eclipse/configuration/org.eclipse.osgi/bundles/57/1/.cp/lib/remoteAnt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/lib/tools.jar:/Users/fleety/Downloads/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.7.2.v3740f.jar" />
+    <property name="user.name" value="fleety" />
+    <property name="java.vm.specification.version" value="1.7" />
+    <property name="sun.java.command" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner -Dorg.eclipse.ant.core.ANT_PROCESS_ID=1508410868834 -Declipse.connect.port=61793 -Declipse.pdebuild.home=/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/.// -Declipse.pdebuild.scripts=/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts// -Declipse.pdebuild.templates=/Users/fleety/Downloads/eclipse/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/templates// -Dant.home=/Users/fleety/Downloads/eclipse/plugins/org.apache.ant_1.8.2.v20120109-1030 -logger org.eclipse.ant.internal.launching.remote.logger.RemoteAntBuildLogger -inputhandler org.eclipse.ant.internal.ui.antsupport.inputhandler.ProxyInputHandler -buildfile /Users/fleety/match_projects/xzy_xzy_module/ant/test.xml" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="user.language" value="zh" />
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="testReport" value="testReport" />
+    <property name="java.version" value="1.7.0_71" />
+    <property name="java.ext.dirs" value="/Users/fleety/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre/classes" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="file.separator" value="/" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="sun.cpu.isalist" value="" />
+  </properties>
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testEventListener" time="2.087" />
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testMultipleQueue" time="1.004" />
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testDynamicThread" time="2.721" />
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testThreadInfo" time="0.072">
+    <failure message="线程数量错误:16 应该为3" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: 线程数量错误:16 应该为3
+	at com.xzy.test.ThreadPoolServerTest.testThreadInfo(ThreadPoolServerTest.java:488)
+	at org.eclipse.ant.internal.launching.remote.EclipseDefaultExecutor.executeTargets(EclipseDefaultExecutor.java:32)
+	at org.eclipse.ant.internal.launching.remote.InternalAntRunner.run(InternalAntRunner.java:424)
+	at org.eclipse.ant.internal.launching.remote.InternalAntRunner.main(InternalAntRunner.java:138)
+</failure>
+  </testcase>
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testTaskExecute" time="1.007" />
+  <testcase classname="com.xzy.test.ThreadPoolServerTest" name="testMultipleTaskExecute" time="3.009" />
+  <system-out><![CDATA[com.xzy.test.ThreadPoolServerTest:ThreadPool Task Listener Test Success
+com.xzy.test.ThreadPoolServerTest:ThreadPool Pool Listener Test Success
+com.xzy.test.ThreadPoolServerTest:ThreadPool multiple queue test success
+com.xzy.test.ThreadPoolServerTest:ThreadPool Dynamic Thread Test Success.
+com.xzy.test.ThreadPoolServerTest:线程数量错误:16 应该为3
+com.xzy.test.ThreadPoolServerTest:ThreadPool Task Execute Success
+com.xzy.test.ThreadPoolServerTest:ThreadPool Multiple Task Execute Success
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

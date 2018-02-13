@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- 
+		<link href="https://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=GIDnGAt8PsmCKiSQizCk84R58sO2GlWf"></script>
+		<script type="text/javascript" src="https://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js"></script>
+		<script type="text/javascript" src="mapEngine_bd.js"></script>
+		 -->
+		 
+		 <!-- 
+		 	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.3&key=92c669c248ac687a2455f296d0a9ce3b"></script>
+			<script type="text/javascript" src="mapEngine_gd.js"></script>
+		  -->
+		  
+		<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+		<script type="text/javascript" src="mapEngine_tx.js"></script>
+		
+		
+		
+		<script>
+			window.onload = function(){
+				window.xzyMap = new XZYMap("test_map",{zoom:16});
+				window.xzyMap.addControl(XZYMap.CONTROL_TYPE.TRAFFIC,{pos:9});
+				
+				//window.testMarker();
+				//window.testPointCollection();
+			}
+			window.testMarker = function(){
+				window.xzyMap.addOverlay("test_overlayer",XZYMap.OVERLAY_TYPE.MARK_TYPE);
+				window.xzyMap.addMarker("test_overlayer",{name:"沪B3452B5",lng:121.521253,lat:31.308611,url:"up-round.png",width:64,height:64});
+				window.xzyMap.addMarkers("test_overlayer",[{name:"沪j",lng:121.521253,lat:31.308911,url:"up-round.png"},{name:"沪j89353",lng:121.521553,lat:31.308911,url:"up-round.png"}]);
+				
+				//window.xzyMap.clearMarkers("test_overlayer");
+			};
+			window.testPointCollection = function(){
+				var ps = [];
+				for(var i=0;i<100000;i++){
+					ps[i] = {id:i,lng:Math.random()/5+121.421253,lat:Math.random()/5+31.208611};
+				}
+				window.xzyMap.addOverlay("test_overlayer",XZYMap.OVERLAY_TYPE.POINT_COLLECTION,{click:function(e){
+					alert(e.point.id);
+				}});
+				window.xzyMap.addMarkers("test_overlayer",ps,{shape:XZYMap.POINT_TYPE.STAR});
+			}
+		</script>
+	</head>
+	<body>
+		<div id="test_map" style="height:500px;width:1000px">
+		</div>
+	</body>
+</html>

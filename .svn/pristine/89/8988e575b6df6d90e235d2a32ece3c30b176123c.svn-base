@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<script src="jquery-1.4.4.js"></script>
+<script>
+
+if(!window.WebSocket) {alert("not support websocket.");}
+
+if(typeof awt_browser_calljava != undefined){
+	window.alert = function(text){
+		awt_browser_calljava(text);
+	}
+}
+
+var socket = new WebSocket("ws://127.0.0.1:1979/DispatchClient");
+
+alert(JSON.stringify(socket));
+socket.onmessage = function(evt) {alert(evt.data);socket.close();}
+
+socket.onclose = function() {alert("close.");}
+
+socket.onopen = function() {alert("open connection.");}
+
+function sendMsg(info) {socket.send(info.data);}
+
+</script>
+	</head>
+</html>

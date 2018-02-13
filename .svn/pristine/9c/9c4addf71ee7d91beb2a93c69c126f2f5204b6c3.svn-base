@@ -1,0 +1,16 @@
+log4j.rootCategory=,stdout,day
+
+log4j.appender.stdout.Threshold=INFO
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %-5p %c - %m%n
+
+#--------------config for day layout-----------------------#
+log4j.appender.day=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.day.File=log/day.log
+log4j.appender.day.Threshold=INFO
+log4j.appender.day.DatePattern='.'yyyy-MM-dd
+log4j.appender.day.layout=org.apache.log4j.PatternLayout
+log4j.appender.day.layout.ConversionPattern=%d{MM-dd HH:mm:ss} %-5p %c - %m%n
+
+

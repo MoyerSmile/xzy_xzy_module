@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="GB2312"?>
+<protocol name="GB905_len" charset="GBK" endian="little" data_timeout="5" capacity="16" match="length=$t_len+22">
+	<transform1>
+		<action name="GB905 0x7d Escape" cls="com.xzy.base.parser.verify.SingleCharacterTransform">
+			<para>0x7d</para>
+			<para>0x7d=0x01</para>
+			<para>0x7e=0x02</para>
+		</action>
+	</transform1>
+	
+	<head>
+		<item name="s_flag" len="2" type="String" value="XX"/>
+		<item name="msg" len="2" type="uint" />
+		<item name="msg1_info1" len="4" type="uint">
+			<verify name="personal verify info1" cls="test.xzy.base.TestExistVerify">
+				
+			</verify>
+		</item>
+		<item name="msg1_info2" len="10" type="string">
+			<verify name="personal verify info2" cls="test.xzy.base.TestExistVerify">
+				
+			</verify>
+		</item>
+		<item name="t_len" len="4" type="uint" />
+	</head>
+	
+	<body minLength="1" msg="$msg">
+		<msg id="0x0001" dir="go" comment="common response">
+			<item name="responseFlowId_x" len="2" type="uint" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+			<item name="remain" len="0" type="byteA" />
+		</msg>
+		<msg id="0x0001" dir="come" comment="common response">
+			<item name="responseFlowId_x" len="2" type="uint" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+			<item name="remain" len="0" type="byteA" />
+		</msg>
+		
+		
+		<msg id="0x0102" dir="come" comment="common response">
+			<item name="bcd_test" len="3" type="bcd" />
+			<item name="name_len" len="2" type="uint" />
+			<item name="name" len="$name_len" type="String" />
+		</msg>
+	</body>
+	
+	<tail>
+		
+	</tail>
+</protocol>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="test" basedir=".." default="test">
+	<target name="test" depends="">
+		<property name="testReport" value="testReport" />
+
+
+		<delete dir="${testReport}" />
+		<mkdir dir="${testReport}" />
+
+
+		<junit>
+			<classpath>
+				<fileset dir="./lib/">
+					<include name="**/*.jar" />
+				</fileset>
+				<pathelement location="bin/" />
+			</classpath>
+
+			<batchtest todir="${testReport}">
+				<formatter type="xml" usefile="true" />
+				<fileset dir="bin/">
+					<include name="com/xzy/test/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>

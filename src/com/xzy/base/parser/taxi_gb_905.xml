@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="GB2312"?>
+<protocol name="GB905" charset="GBK" data_timeout="10" capacity="2" max_capacity="2" string_end_byte_flag="0" match="head_tail">
+	<desc>
+		<protocol>
+			name:匹配协议的名称
+			charset:全局的字符集名称
+			capacity:开启的缓存大小，单位K
+			data_timeout：单位秒，新收到的数据相比较之前收到的数据，时长超过了这个配置值，那么前面剩余的所有数据将被抛弃。
+			match: 一个完整应用协议的匹配模式。head_tail头尾标签模式，此模式下，head中的第一个项和tail中的最后一个项必须配置value；length=$len+offset模式，此模式下，$len代表后续head中的一个变量值，$len+offset代表整个应用协议的长度，offset可以是负数，如此成为减。
+		</protocol>
+		<item>
+			name: 项目的flag
+			maxLen:代表最大支持的长度
+			type: uint,int,bcd,byteA,String,Group
+			len: 支持直接数字，或者变量的引用$driverInfoLength，本协议内的变量，如果直接配置的数字为0，代表一直寻找到数据结束
+			value: 传递过来的值应当等于匹配的数值，大多数时候不配置。如果类型是数字，配置支持16进制和10进制，反之作为字符串看待。
+			String字符串有三种长度描述方法，前面一个字段描述长度$len模式，还有就是固定长度模式，还有一种就是采用string_end_byte_flag,len是数字模式并且长度为0,此种模式需要从开始位置寻找对应的结束字节，作为整个的字符串长度。
+			charset: 如果类型是String，那么采用的字符集，如果不配置，则采用protocol中配置的
+			verify:代表解析协议支持的一个函数，通过逗号分割，会带入参数，除了这个外部参数，协议本身完整的数据也将传入。见接口IVerifyFunc，具体支持的参数见具体的接口说明
+			<group>
+				<!--  
+				代表一组消息，通常它的长度是前面描述有若干个的循环，也就是len等于前面的一个数量描述，而后对group内的若干个item进行对应的若干次循环。group返回信息是对应的名字对应的一个List<InfoContainer>
+				group的len可以配置为一个常量，代表后续有这么多个结构体，如果配置为0，代表着一直寻找到协议结束，这种只能配置在协议的尾端，因为会寻找到协议的结束。
+				 -->
+			</group>
+		</item>
+		
+		<body>
+			minLength代表body区域的最短消息长度，如果整体长度不满足这个需求（考虑进head和tail的部分），那么协议错误。
+			msg代表后续body中每个msg中的id需要匹配的在head中的对象，如果在head中对应的$msg是一个数字，那么配置的id也将被转换为数字，支持16进制和10进制，反之则作为字符串比较。
+			<msg>
+				id代表需要匹配的消息号的值
+				dir代表消息的方向，come代表到达的消息，go代表发送的消息
+				comment是备注信息
+			</msg>
+		</body>
+	</desc>
+	
+	<transform>
+		<action name="GB905 0x7d Escape" cls="com.xzy.base.parser.verify.SingleCharacterTransform">
+			<para>0x7d</para>
+			<para>0x7d=0x01</para>
+			<para>0x7e=0x02</para>
+		</action>
+	</transform>
+	
+	<head>
+		<item name="s_flag" len="1" type="uint" value="0x7e"/>
+		<item name="msg" len="2" type="uint" />
+		<item name="property" len="2" type="uint" />
+		<item name="deviceId" len="6" type="bcd" />
+		<item name="flowId" len="2" type="uint" />
+	</head>
+	
+	<body minLength="1" msg="$msg">
+		<msg id="0x0001" dir="go" comment="common response">
+			<item name="responseFlowId" len="2" type="uint" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+		</msg>
+		
+		
+		<msg id="0x8001" dir="come" comment="common response">
+			<item name="responseFlowId" len="2" type="uint" />
+			<item name="responseMessageId" len="2" type="uint" />
+			<item name="result" len="1" type="uint" />
+		</msg>
+		
+		<msg id="0x8301" dir="come" comment="event list setup">
+			<item name="eventNum" len="1" type="uint" />
+			<item name="eventList" len="$eventNum" type="group">
+				<item name="id" len="1" type="uint" />
+				<item name="content" len="0" type="String" maxLen="20"/>
+			</item>
+		</msg>
+	</body>
+	
+	<tail>
+		<item name="crc" len="1" type="uint">
+			<verify name="crc8 verify" cls="com.xzy.base.parser.verify.CrcVerifyFunc">
+				<para>crc8</para>
+				<para>1</para>
+				<para>-2</para>
+			</verify>
+		</item>
+		<item name="e_flag" len="1" type="int" value="0x7e" />
+	</tail>
+</protocol>

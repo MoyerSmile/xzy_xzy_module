@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jar" basedir=".." default="jar">	
+  	<property name="src" location="src"/>
+  	<property name="bin" location="bin"/>
+
+	  <path id="build.classpath">
+		<fileset dir="${bin}"><include name="*"/></fileset>
+		<fileset dir="lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	  </path>
+
+	<target name="init">
+    	<mkdir dir="build" />
+    	<mkdir dir="build/lib" />
+	</target>
+
+
+	<target name="jar" depends="init">
+		<jar basedir="${bin}" destfile="build/xzy_module.jar"/>
+		
+		<copy todir="build/conf/">
+			<fileset dir="conf/">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+	</target>
+</project>
